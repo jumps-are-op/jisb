@@ -1,0 +1,32 @@
+jisb  Jisb Is a Suck-less Bar
+
+Look at config.h and make it your dynamiclly-generated status bar!
+
+Every block can be added using the following format:
+
+BLK(interval, signal, blocktype, string, func, prefix, suffix)
+
+interval -> Positive number of seconds to wait.
+	If 0, only run once at startup.
+signal -> Run when SIGRTMIN+signal is recived, 0 means no signal.
+blocktype -> Can be one of the following:
+	SH -> Execute shell string and capture it's output.
+	FILE -> Read from the first line of the file.
+	FUNC -> Only run `func` and ignore the string.
+string -> File/sh string to read/execute.
+func -> If non-NULL, will be called on the buffer,
+	and if the type is not FUNC and the string is non-NULL,
+	the result of the string will be passed to `func`.
+prefix -> A prefix to always print before the block.
+suffix -> A suffix to always print after the block.
+
+NOTE: Strings (other than `block.string`) are always wide-character strings.
+	And in C, wide-character strings are defined as `L"MYSTRING"`.
+	See `wchar.h` for more information.
+
+$ wc -l *.[ch]
+ 155 config.h
+ 120 jisb.c
+ 275 total
+$ echo "muh minimalism"
+muh minimalism
