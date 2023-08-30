@@ -70,6 +70,8 @@ int main(int argc, char *argv[]){
 	}
 
 	do{
+		while(unslept)
+			unslept = sleep(unslept);
 		for every block
 			if(blocks[i].interval &&
 				!(totaltime%blocks[i].interval))
@@ -77,8 +79,6 @@ int main(int argc, char *argv[]){
 		updateoutput();
 		totaltime += interval;
 		unslept = sleep(unslept ? unslept : interval);
-		if(unslept)
-			continue;
 	}while(1);
 }
 
