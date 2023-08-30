@@ -69,7 +69,7 @@ DEFFUN(getmem){
 	FILE *fp = fopen("/proc/meminfo", "r");
 	char *line = NULL, *xline;
 	size_t n = 0;
-	unsigned total, aval;
+	unsigned total = 0, aval = 0;
 	if(!fp)
 		return;
 	while(getline(&line, &n, fp)){
