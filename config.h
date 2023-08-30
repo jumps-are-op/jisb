@@ -110,10 +110,9 @@ DEFFUN(gettemp){
 }
 
 DEFFUN(getvol){
-	if(b[2] == L'%')
-		b[2] = L'\0';
-	if(b[3] == L'%')
-		b[3] = L'\0';
+	wchar *p = wcschr(b, L'%');
+	if(p)
+		*p = L'\0';
 	if(*b == L'm'){
 		wcscpy(b, L"**");
 		return;
