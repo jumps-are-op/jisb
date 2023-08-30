@@ -51,7 +51,7 @@ void readfile(struct Block*, FILE*(*)(const char*,const char*),
                              int(*)(FILE*));
 
 int main(int argc, char *argv[]){
-	unsigned i, unslept = 0, totaltime;
+	unsigned i, unslept = 0, totaltime = 0;
 	struct sigaction sa;
 	sa.sa_handler = handler;
 	sigemptyset(&sa.sa_mask);
