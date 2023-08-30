@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
 	if(!(dpy = XOpenDisplay(NULL)))
 		return 1;
 
-	totalsiz = BLKBUFSIZ*LEN(blocks);
+	totalsiz = (BLKBUFSIZ+1)*LEN(blocks);
 	for every block{
 		if(blocks[i].prefix)
 			totalsiz += wcslen(blocks[i].prefix);
@@ -88,6 +88,8 @@ int main(int argc, char *argv[]){
 	}
 
 	do{
+		while(unslept)
+			unslept = sleep(unslept);
 		for every block
 			if(blocks[i].interval &&
 				!(totaltime%blocks[i].interval))
@@ -95,8 +97,6 @@ int main(int argc, char *argv[]){
 		updateoutput();
 		totaltime += interval;
 		unslept = sleep(unslept ? unslept : interval);
-		if(unslept)
-			continue;
 	}while(1);
 }
 

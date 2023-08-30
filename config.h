@@ -152,11 +152,13 @@ void updateoutput(void){
 		if(i < LEN(blocks)-1)
 			*totalbuf++ = L' ';
 	}
-	*totalbuf = '\0';
+	*totalbuf = L'\0';
+	totalbuf = p;
 	
 	len = wcstombs(NULL, p, 0);
 	buf = (char*)malloc(len+1);
 	wcstombs(buf, p, len);
+	XStoreName(dpy, DefaultRootWindow(dpy), NULL);
 	XStoreName(dpy, DefaultRootWindow(dpy), buf);
 	XFlush(dpy);
 	free(buf);
