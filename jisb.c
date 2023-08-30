@@ -66,8 +66,7 @@ int main(int argc, char *argv[]){
 		if(blocks[i].sig &&
 			sigaction(SIGRTMIN+blocks[i].sig, &sa, NULL) == -1)
 			perror("sigaction");
-		if(!blocks[i].interval)
-			execblk(i);
+		execblk(i);
 	}
 
 	do{
