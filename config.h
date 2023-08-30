@@ -158,7 +158,7 @@ void updateoutput(void){
 	len = wcstombs(NULL, p, 0);
 	buf = (char*)malloc(len+1);
 	wcstombs(buf, p, len);
-	XStoreName(dpy, DefaultRootWindow(dpy), NULL);
+	buf[len] = '\0';
 	XStoreName(dpy, DefaultRootWindow(dpy), buf);
 	XFlush(dpy);
 	free(buf);
