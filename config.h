@@ -64,6 +64,7 @@ DEFFUN(getcpu){
 
 	swprintf(b, BLKBUFSIZ, L"%llu", (100*((x[0]+x[1]+x[2]+x[5]+x[6])-
 	                                (y[0]+y[1]+y[2]+y[5]+y[6])))/sum);
+	fclose(fp);
 }
 
 DEFFUN(getmem){
@@ -104,6 +105,7 @@ DEFFUN(getmem){
 		}
 	}
 	swprintf(b, BLKBUFSIZ, L"%d", 100-(aval*100/total));
+	fclose(fp);
 }
 
 DEFFUN(gettemp){
