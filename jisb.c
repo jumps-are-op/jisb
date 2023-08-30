@@ -17,6 +17,8 @@ typedef wchar_t wchar;
 typedef wint_t wint;
 typedef size_t uint;
 
+#include <X11/Xlib.h>
+
 
 #define LEN(x) (sizeof(x)/sizeof(*x))
 #define every (i = 0;
@@ -43,6 +45,10 @@ struct Block{
 	wchar buf[BLKBUFSIZ+1];
 };
 
+uint totalsiz;
+wchar *totalbuf;
+Display *dpy;
+
 #include "config.h"
 
 void handler(int);
@@ -62,12 +68,23 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 
+	if(!(dpy = XOpenDisplay(NULL)))
+		return 1;
+
+	totalsiz = BLKBUFSIZ*LEN(blocks);
+	for every block{
+		if(blocks[i].prefix)
+			totalsiz += wcslen(blocks[i].prefix);
+		if(blocks[i].suffix)
+			totalsiz += wcslen(blocks[i].suffix);
+	}
+	totalbuf = (wchar*)malloc(totalsiz*sizeof(wchar));
+
 	for every block{
 		if(blocks[i].sig &&
 			sigaction(SIGRTMIN+blocks[i].sig, &sa, NULL) == -1)
 			perror("sigaction");
-		if(!blocks[i].interval)
-			execblk(i);
+		execblk(i);
 	}
 
 	do{

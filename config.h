@@ -139,18 +139,25 @@ void skipcntrl(wchar *buf, unsigned size){
 }
 
 void updateoutput(void){
-	uint i;
-	putwchar(L'\r');
+	wchar *p = totalbuf;
+	char *buf;
+	uint i, len;
 	for every block{
 		if(blocks[i].prefix)
-			fputws(blocks[i].prefix, stdout);
+			totalbuf = wcpcpy(totalbuf, blocks[i].prefix);
 		skipcntrl(blocks[i].buf, BLKBUFSIZ);
-		fputws(blocks[i].buf, stdout);
+		totalbuf = wcpcpy(totalbuf, blocks[i].buf);
 		if(blocks[i].suffix)
-			fputws(blocks[i].suffix, stdout);
+			totalbuf = wcpcpy(totalbuf, blocks[i].suffix);
 		if(i < LEN(blocks)-1)
-			putwchar(L' ');
+			*totalbuf++ = L' ';
 	}
-	fputws(L"\033[K", stdout);
-	fflush(stdout);
+	*totalbuf = '\0';
+	
+	len = wcstombs(NULL, p, 0);
+	buf = (char*)malloc(len+1);
+	wcstombs(buf, p, len);
+	XStoreName(dpy, DefaultRootWindow(dpy), buf);
+	XFlush(dpy);
+	free(buf);
 }
