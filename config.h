@@ -10,10 +10,11 @@ DEFFUN(getvol);
 DEFFUN(gettime);
 
 #define MAILDIR "/home/jumps/.local/share/mail/INBOX/new/"
-#define TEMP "/sys/class/hwmon/hwmon1/device/temp"
+#define TEMP "/sys/class/thermal/thermal_zone0/temp"
 #define BAT  "/sys/class/power_supply/BAT0/capacity"
 #define AUD  "pamixer --get-volume-human"
 #define CPU  "/proc/stat"
+#define MEM  "/proc/meminfo"
 struct Block blocks[] = {
 	/* interval, RTMIN+signal, type, string, func, prefix, suffix */
 	BLK(3, 2, FUNC, NULL, nmail,   NULL, L"m"),
@@ -66,7 +67,7 @@ DEFFUN(getcpu){
 }
 
 DEFFUN(getmem){
-	FILE *fp = fopen("/proc/meminfo", "r");
+	FILE *fp = fopen(MEM, "r");
 	char *line = NULL, *xline;
 	size_t n = 0;
 	unsigned total = 0, aval = 0;
@@ -110,10 +111,9 @@ DEFFUN(gettemp){
 }
 
 DEFFUN(getvol){
-	if(b[2] == L'%')
-		b[2] = L'\0';
-	if(b[3] == L'%')
-		b[3] = L'\0';
+	wchar *p = wcschr(b, L'%');
+	if(p)
+		*p = L'\0';
 	if(*b == L'm'){
 		wcscpy(b, L"**");
 		return;
